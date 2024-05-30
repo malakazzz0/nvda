@@ -7,22 +7,28 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
     - name: Install dependencies
       run: |
-        # Add commands to install dependencies here
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
     - name: Build NVDA
       run: |
-        # Add build commands here
+        python build.py build
 
-    - name: Save artifacts
+    - name: Save nvda.exe
       uses: actions/upload-artifact@v2
       with:
-        name: nvda-artifact
-        path: path/to/compiled/nvda
+        name: nvda-exe
+        path: output/nvda.exe
